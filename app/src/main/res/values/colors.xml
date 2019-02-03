@@ -3,4 +3,31 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="rainyLight">#9DC5C5</color>
+    <color name="rainyDark">#89B4B6</color>
+    <color name="rainyAccent">#F2BF93</color>
+
+    <color name="cloudyLight">#71D0F4</color>
+    <color name="cloudyDark">#2A92C7</color>
+    <color name="cloudyAccent">#FF8900</color>
+
+    <color name="sunnyLight">#FFA264</color>
+    <color name="sunnyDark">#E06652</color>
+    <color name="sunnyAccent">#27917F</color>
+
+    <!--In reverse for night sky-->
+    <color name="nightLight">#132432</color>
+    <color name="nightDark">#002E43</color>
+    <color name="nightAccent">#CEAC7C</color>
+
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="successGreen">#4BB543</color>
+    <color name="failureRed">#FF9494</color>
+
+
+
 </resources>

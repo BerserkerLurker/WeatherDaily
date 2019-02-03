@@ -3,9 +3,57 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">?themePrimary</item>
+        <item name="colorPrimaryDark">?themePrimaryDark</item>
+        <item name="colorAccent">?themeAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Rainy">
+        <item name="themePrimary">@color/rainyLight</item>
+        <item name="themePrimaryDark">@color/rainyDark</item>
+        <item name="themeAccent">@color/rainyAccent</item>
+        <item name="themeContentBackground">@color/white</item>
+        <item name="themeContentTextColor">@color/white</item>
+        <item name="themeContentTextColorOnPrimary">@color/white</item>
+        <item name="themeTextColorSuccess">@color/successGreen</item>
+        <item name="themeTextColorFailure">@color/failureRed</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Cloudy">
+        <item name="themePrimary">@color/cloudyLight</item>
+        <item name="themePrimaryDark">@color/cloudyDark</item>
+        <item name="themeAccent">@color/cloudyAccent</item>
+        <item name="themeContentBackground">@color/white</item>
+        <item name="themeContentTextColor">@color/white</item>
+        <item name="themeContentTextColorOnPrimary">@color/white</item>
+        <item name="themeTextColorSuccess">@color/successGreen</item>
+        <item name="themeTextColorFailure">@color/failureRed</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Sunny">
+        <item name="themePrimary">@color/sunnyLight</item>
+        <item name="themePrimaryDark">@color/sunnyDark</item>
+        <item name="themeAccent">@color/sunnyAccent</item>
+        <item name="themeContentBackground">@color/white</item>
+        <item name="themeContentTextColor">@color/white</item>
+        <item name="themeContentTextColorOnPrimary">@color/white</item>
+        <item name="themeTextColorSuccess">@color/successGreen</item>
+        <item name="themeTextColorFailure">@color/failureRed</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Night">
+        <item name="themePrimary">@color/nightLight</item>
+        <item name="themePrimaryDark">@color/nightDark</item>
+        <item name="themeAccent">@color/nightAccent</item>
+        <item name="themeContentBackground">@color/white</item>
+        <item name="themeContentTextColor">@color/white</item>
+        <item name="themeContentTextColorOnPrimary">@color/white</item>
+        <item name="themeTextColorSuccess">@color/successGreen</item>
+        <item name="themeTextColorFailure">@color/failureRed</item>
+    </style>
 </resources>
