@@ -1,10 +1,14 @@
 package com.onadasoft.weatherdaily.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Main {
     private double temp;
     private long pressure;
     private long humidity;
+    @SerializedName("temp_min")
     private double tempMin;
+    @SerializedName("temp_max")
     private double tempMax;
 
     public double getTemp() {
