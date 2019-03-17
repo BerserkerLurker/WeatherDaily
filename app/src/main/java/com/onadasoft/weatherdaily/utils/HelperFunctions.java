@@ -1,6 +1,5 @@
 package com.onadasoft.weatherdaily.utils;
 
-import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,7 +8,7 @@ import com.onadasoft.weatherdaily.App;
 import com.onadasoft.weatherdaily.R;
 
 import java.util.Date;
-
+import java.util.LinkedHashMap;
 
 
 public class HelperFunctions {
@@ -53,12 +52,16 @@ public class HelperFunctions {
     }
 
 
-    public boolean isNetworkAvailable(Context context){
+    public static boolean isNetworkAvailable(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if(networkInfo == null) return false;
         NetworkInfo.State network = networkInfo.getState();
         return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
+    }
+
+    public static Object getElementByIndex(LinkedHashMap map, int index){
+        return map.get((map.keySet().toArray())[index]);
     }
 
 }
