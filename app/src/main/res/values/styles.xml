@@ -6,6 +6,7 @@
         <item name="colorPrimary">?themePrimary</item>
         <item name="colorPrimaryDark">?themePrimaryDark</item>
         <item name="colorAccent">?themeAccent</item>
+        <item name="android:textColor">?themeContentTextColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
