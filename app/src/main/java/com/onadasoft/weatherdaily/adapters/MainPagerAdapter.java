@@ -55,7 +55,7 @@ public class MainPagerAdapter extends SmartFragmentStatePagerAdapter {
     }
 
     @Override
-    public int getCount() {     
+    public int getCount() {
         //if (currentWeatherMap!=null) {
             return currentWeatherMap.size();
         //}
