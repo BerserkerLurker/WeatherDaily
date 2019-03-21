@@ -46,4 +46,14 @@ public class City {
     public void setCoord(Coord coord) {
         this.coord = coord;
     }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", coord=" + coord +
+                '}';
+    }
 }
