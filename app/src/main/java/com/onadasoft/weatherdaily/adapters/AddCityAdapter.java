@@ -41,7 +41,7 @@ public class AddCityAdapter extends RecyclerView.Adapter<AddCityAdapter.ViewHold
         TextView cityName = viewHolder.cityName;
         cityName.setText(city.getName());
 
-        ImageView delBtn = viewHolder.delBtn;
+        //ImageView delBtn = viewHolder.delBtn;
         // ToDo
 
     }
@@ -54,12 +54,12 @@ public class AddCityAdapter extends RecyclerView.Adapter<AddCityAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView cityName;
-        ImageView delBtn;
+        //ImageView delBtn;
 
         ViewHolder(View itemView) {
             super(itemView);
             cityName = itemView.findViewById(R.id.tvCityName);
-            delBtn = itemView.findViewById(R.id.btnDeleteCity);
+            //delBtn = itemView.findViewById(R.id.btnDeleteCity);
         }
     }
 }
