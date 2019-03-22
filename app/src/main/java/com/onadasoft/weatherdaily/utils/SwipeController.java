@@ -34,6 +34,12 @@ public class SwipeController extends ItemTouchHelper.Callback {
 
     private RecyclerView.ViewHolder currentItemViewHolder = null;
 
+    private SwipeControllerActions buttonsActions = null;
+
+    public SwipeController(SwipeControllerActions buttonsActions){
+        this.buttonsActions = buttonsActions;
+    }
+
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         //return makeMovementFlags(0, LEFT | RIGHT);
@@ -177,7 +183,20 @@ public class SwipeController extends ItemTouchHelper.Callback {
                     });
                     setItemsClickable(recyclerView, true);
                     swipeBack = false;
+
+
+                    if (buttonsActions != null && buttonInstance != null && buttonInstance.contains(motionEvent.getX(), motionEvent.getY())) {
+                        if (buttonShowedState == ButtonsState.LEFT_VISIBLE) {
+                            buttonsActions.onLeftClicked(viewHolder.getAdapterPosition());
+                        }
+                        else if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
+                            buttonsActions.onRightClicked(viewHolder.getAdapterPosition());
+                        }
+                    }
+
                     buttonShowedState = ButtonsState.GONE;
+                    currentItemViewHolder = null;
+
                 }
                 return false;
             }

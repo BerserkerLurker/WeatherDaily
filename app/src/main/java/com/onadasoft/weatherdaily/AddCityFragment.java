@@ -20,6 +20,7 @@ import com.onadasoft.weatherdaily.models.Coord;
 import com.onadasoft.weatherdaily.models.Current;
 import com.onadasoft.weatherdaily.models.recyclerCities.City;
 import com.onadasoft.weatherdaily.utils.SwipeController;
+import com.onadasoft.weatherdaily.utils.SwipeControllerActions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,14 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
         rvCities.setAdapter(addCityAdapter);
 
-        SwipeController swipeController = new SwipeController();
+        SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                mCities.remove(position);
+                addCityAdapter.notifyItemRemoved(position);
+                addCityAdapter.notifyItemRangeChanged(position, addCityAdapter.getItemCount());
+            }
+        });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(rvCities);
 
