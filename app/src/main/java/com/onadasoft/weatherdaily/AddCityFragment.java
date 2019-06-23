@@ -1,8 +1,13 @@
 package com.onadasoft.weatherdaily;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -10,9 +15,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.onadasoft.weatherdaily.adapters.AddCityAdapter;
@@ -108,10 +115,46 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
         }
         if(view.getId() == R.id.fabAddCity){
-            // ToDo -- replace with right logic (Dialog box and JSON indexing for available cities)
-            City test = new City(123, "London", "uk", new Coord(10.10, 11.11));
-            mCities.add(test);
-            addCityAdapter.notifyDataSetChanged();
+
+            // ------------NewCityInput-------------
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext(), R.style.CustomDialogTheme);
+                alert.setTitle("Add new city");
+                alert.setMessage("Type the city name");
+                // Set an EditText view to get user input
+                final EditText input = new EditText(getContext());
+
+                // Color of InputText content
+                TypedValue typedValue = new TypedValue();
+                Resources.Theme theme = getContext().getTheme();
+                theme.resolveAttribute(R.attr.themeContentTextColor, typedValue, true);
+                @ColorInt int color = typedValue.data;
+                input.setTextColor(color);
+
+                input.setHint("ex.: London");
+                input.setHintTextColor(Color.GRAY);
+
+
+                alert.setView(input);
+                alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String result = input.getText().toString();
+
+                        // Add City to list
+                        // ToDo -- replace with right logic (Dialog box and JSON indexing for available cities)
+                        City test = new City(123, result, "uk", new Coord(10.10, 11.11));
+                        mCities.add(test);
+                        addCityAdapter.notifyDataSetChanged();
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alert.show();
+            // ------------NewCityInput-------------
+
+
         }
     }
 }
