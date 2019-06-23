@@ -57,4 +57,10 @@
         <item name="themeTextColorSuccess">@color/successGreen</item>
         <item name="themeTextColorFailure">@color/failureRed</item>
     </style>
+
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">?themePrimaryDark</item>
+        <item name="colorAccent">?themeAccent</item>
+        <item name="android:textColorPrimary">?themeAccent</item>
+    </style>
 </resources>
