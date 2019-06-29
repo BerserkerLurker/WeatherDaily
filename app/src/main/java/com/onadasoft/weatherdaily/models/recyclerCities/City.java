@@ -1,12 +1,34 @@
 package com.onadasoft.weatherdaily.models.recyclerCities;
 
+
+
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.onadasoft.weatherdaily.models.Coord;
 
+import org.json.JSONObject;
+
+@Entity
 public class City {
+    @PrimaryKey
     private long id;
     private String name;
     private String country;
+    @Embedded
     private Coord coord;
+
+    public City(){
+
+    }
+
+    public City(JSONObject json){
+        this.id = json.optLong("id");
+        this.name = json.optString("name");
+        this.country = json.optString("country");
+        this.coord = new Coord(json.optJSONObject("coord"));
+    }
 
     public City(long id, String name, String country, Coord coord) {
         this.id = id;
