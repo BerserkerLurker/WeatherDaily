@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -26,6 +27,8 @@ import com.onadasoft.weatherdaily.adapters.AddCityAdapter;
 import com.onadasoft.weatherdaily.models.Coord;
 import com.onadasoft.weatherdaily.models.Current;
 import com.onadasoft.weatherdaily.models.recyclerCities.City;
+import com.onadasoft.weatherdaily.roomdb.db.AppDatabase;
+import com.onadasoft.weatherdaily.utils.HelperFunctions;
 import com.onadasoft.weatherdaily.utils.SwipeController;
 import com.onadasoft.weatherdaily.utils.SwipeControllerActions;
 
@@ -37,6 +40,8 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class AddCityFragment extends Fragment implements View.OnClickListener {
+
+    private AppDatabase appDB;
 
     ImageView backBtn;
     RecyclerView rvCities;
@@ -66,6 +71,10 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
         Log.d("FromAddFrag", "ListCities: "+ mCities.toString());
 
+
+        appDB = ((App)getActivity().getApplication()).getDatabase();
+
+
     }
 
     @Override
@@ -81,6 +90,22 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
         fabAddCity = view.findViewById(R.id.fabAddCity);
         fabAddCity.setOnClickListener(this);
+        fabAddCity.setEnabled(false);
+        fabAddCity.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+
+        Thread fabController = new Thread(() -> {
+            try {
+                ((App)getActivity().getApplication()).getStartLatch().await();
+                getActivity().runOnUiThread(() -> {
+                    fabAddCity.setEnabled(true);
+                    fabAddCity.getBackground().setColorFilter(null);
+                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        fabController.start();
 
         rvCities = view.findViewById(R.id.rvCities);
         addCityAdapter = new AddCityAdapter(mCities);
@@ -106,13 +131,17 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+
+
         return view;
     }
+
+
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_back_add_city){
-
+            new Thread(() -> appDB.cityDao().nukeCities()).start();
         }
         if(view.getId() == R.id.fabAddCity){
 
@@ -135,6 +164,7 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
 
                 alert.setView(input);
+
                 alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String result = input.getText().toString();
@@ -157,4 +187,5 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
         }
     }
+
 }
