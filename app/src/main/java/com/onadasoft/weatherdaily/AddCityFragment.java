@@ -141,7 +141,7 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_back_add_city){
-            new Thread(() -> appDB.cityDao().nukeCities()).start();
+            getActivity().onBackPressed();
         }
         if(view.getId() == R.id.fabAddCity){
 
