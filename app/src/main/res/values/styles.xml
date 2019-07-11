@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">?themePrimaryDark</item>
         <item name="colorAccent">?themeAccent</item>
         <item name="android:textColor">?themeContentTextColor</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -62,5 +63,11 @@
         <item name="android:windowBackground">?themePrimaryDark</item>
         <item name="colorAccent">?themeAccent</item>
         <item name="android:textColorPrimary">?themeAccent</item>
+    </style>
+
+    <style name="DropDownListViewStyle">
+        <item name="android:background">?themePrimary</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">?themeAccent</item>
     </style>
 </resources>
