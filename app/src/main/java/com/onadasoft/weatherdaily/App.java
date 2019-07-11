@@ -1,12 +1,11 @@
 package com.onadasoft.weatherdaily;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
 import android.content.res.Resources;
 import android.util.Log;
 
 
-
+import com.facebook.stetho.Stetho;
 import com.onadasoft.weatherdaily.models.recyclerCities.City;
 import com.onadasoft.weatherdaily.roomdb.db.AppDatabase;
 import com.onadasoft.weatherdaily.utils.HelperFunctions;
@@ -30,6 +29,9 @@ public class App extends Application implements RunnableCompleteListener {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // ToDo -- Debug only (Stetho)
+        Stetho.initializeWithDefaults(this);
 
         resources = getResources();
 
