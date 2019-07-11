@@ -26,6 +26,16 @@ public class App extends Application implements RunnableCompleteListener {
 
     private AppDatabase appDB;
 
+    //--- get Application singleton
+    static App myAppInstance;
+    public App() {
+        myAppInstance = this;
+    }
+    public static App getInstance() {
+        return myAppInstance;
+    }
+    //---
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -35,7 +45,8 @@ public class App extends Application implements RunnableCompleteListener {
 
         resources = getResources();
 
-        appDB = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "cities-db").build();
+        //appDB = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "cities-db").build();
+        appDB = AppDatabase.getDatabase(this);
 
         Thread thread = Thread.currentThread();
         Log.d("threadmain", thread.getName());
