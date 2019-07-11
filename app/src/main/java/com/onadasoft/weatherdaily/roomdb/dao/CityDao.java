@@ -16,7 +16,7 @@ public interface CityDao {
     List<City> getAll();
 
     @Query("SELECT * FROM city WHERE name LIKE :name || '%' ORDER BY name ASC LIMIT 10")
-    City findByName(String name);
+    List<City> findByName(String name);
 
     @Query("SELECT COUNT(*) FROM city")
     int getCitySize();
