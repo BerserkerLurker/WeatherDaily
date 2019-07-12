@@ -20,15 +20,17 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.onadasoft.weatherdaily.adapters.AddCityAdapter;
-import com.onadasoft.weatherdaily.models.Coord;
+import com.onadasoft.weatherdaily.adapters.CitySuggestionAdapter;
 import com.onadasoft.weatherdaily.models.Current;
 import com.onadasoft.weatherdaily.models.recyclerCities.City;
 import com.onadasoft.weatherdaily.roomdb.db.AppDatabase;
-import com.onadasoft.weatherdaily.utils.HelperFunctions;
 import com.onadasoft.weatherdaily.utils.SwipeController;
 import com.onadasoft.weatherdaily.utils.SwipeControllerActions;
 
@@ -46,6 +48,7 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
     ImageView backBtn;
     RecyclerView rvCities;
     FloatingActionButton fabAddCity;
+    AlertDialog alert;
 
     AddCityAdapter addCityAdapter;
 
@@ -72,7 +75,8 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
         Log.d("FromAddFrag", "ListCities: "+ mCities.toString());
 
 
-        appDB = ((App)getActivity().getApplication()).getDatabase();
+        //appDB = ((App)getActivity().getApplication()).getDatabase();
+        appDB = AppDatabase.getDatabase(getContext());
 
 
     }
@@ -146,46 +150,77 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
         if(view.getId() == R.id.fabAddCity){
 
             // ------------NewCityInput-------------
-                AlertDialog.Builder alert = new AlertDialog.Builder(getContext(), R.style.CustomDialogTheme);
-                alert.setTitle("Add new city");
-                alert.setMessage("Type the city name");
-                // Set an EditText view to get user input
-                final EditText input = new EditText(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomDialogTheme);
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // Canceled.
+                }
+            });
+            alert = builder.create();
+            alert.setTitle("Add new city");
+            alert.setMessage("Type the city name");
+            // Set an EditText view to get user input
 
-                // Color of InputText content
-                TypedValue typedValue = new TypedValue();
-                Resources.Theme theme = getContext().getTheme();
-                theme.resolveAttribute(R.attr.themeContentTextColor, typedValue, true);
-                @ColorInt int color = typedValue.data;
-                input.setTextColor(color);
+            final AutoCompleteTextView input = new AutoCompleteTextView(getContext());
 
-                input.setHint("ex.: London");
-                input.setHintTextColor(Color.GRAY);
+            // Color of InputText content
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getContext().getTheme();
+            theme.resolveAttribute(R.attr.themeContentTextColor, typedValue, true);
+            @ColorInt int color = typedValue.data;
+            input.setTextColor(color);
 
 
-                alert.setView(input);
+            input.setHint("ex.: London");
+            input.setHintTextColor(Color.GRAY);
 
-                alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String result = input.getText().toString();
+            // margin
+            input.setSingleLine();
+            FrameLayout container = new FrameLayout(getActivity());
+            FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            input.setLayoutParams(params);
+            container.addView(input);
 
-                        // Add City to list
-                        // ToDo -- replace with right logic (Dialog box and JSON indexing for available cities)
-                        City test = new City(123, result, "uk", new Coord(10.10, 11.11));
-                        mCities.add(test);
-                        addCityAdapter.notifyDataSetChanged();
-                    }
-                });
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
-                    }
-                });
-                alert.show();
-            // ------------NewCityInput-------------
+
+            List<City> cities = new ArrayList<City>();
+            CitySuggestionAdapter adapter = new CitySuggestionAdapter(this.getContext(), android.R.layout.simple_list_item_1, cities);
+            input.setAdapter(adapter);
+            input.setOnItemClickListener(onItemClickListener);
+
+
+            alert.setView(container);
+
+            /*alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String result = input.getText().toString();
+
+                    // Add City to list
+                    // ToDo -- replace with right logic (Dialog box and JSON indexing for available cities)
+                    City test = new City(123, result, "uk", new Coord(10.10, 11.11));
+                    mCities.add(test);
+                    addCityAdapter.notifyDataSetChanged();
+                }
+            });*/
+
+
+            alert.show();
+        // ------------NewCityInput-------------
 
 
         }
     }
+
+    private AdapterView.OnItemClickListener onItemClickListener =
+            new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(AddCityFragment.this.getContext(),"Clicked item from Auto completion list "
+                    + parent.getItemAtPosition(position)
+                    , Toast.LENGTH_SHORT).show();
+                    mCities.add((City)parent.getItemAtPosition(position));
+                    alert.dismiss();
+                }
+            };
 
 }
