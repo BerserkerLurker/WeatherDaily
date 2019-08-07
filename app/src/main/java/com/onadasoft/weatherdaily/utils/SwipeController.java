@@ -138,12 +138,12 @@ public class SwipeController extends ItemTouchHelper.Callback {
                 swipeBack = motionEvent.getAction() == MotionEvent.ACTION_CANCEL || motionEvent.getAction() == MotionEvent.ACTION_UP;
 
                 if (swipeBack){
-                    Log.d("dX ", dX+"");
+                    // Log.d("dX ", dX+"");
                     if (dX < -buttonWidth) buttonShowedState = ButtonsState.RIGHT_VISIBLE;
                     else if (dX > buttonWidth) buttonShowedState  = ButtonsState.LEFT_VISIBLE;
 
                     if (buttonShowedState != ButtonsState.GONE){
-                        Log.d("btnState ", buttonShowedState+"");
+                        // Log.d("btnState ", buttonShowedState+"");
 
                         setTouchDownListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                         setItemsClickable(recyclerView, false);

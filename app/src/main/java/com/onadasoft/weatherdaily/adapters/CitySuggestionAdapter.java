@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
@@ -56,6 +58,20 @@ public class CitySuggestionAdapter extends ArrayAdapter {
         TextView cityName = view.findViewById(android.R.id.text1);
         cityName.setText(getItem(position).getName());
 
+//
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if(event.getAction() == MotionEvent.ACTION_DOWN){
+//                    InputMethodManager imm = (InputMethodManager)getContext()
+//                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+//                }
+//                return false;
+//            }
+//        });
+
+
         return view;
     }
 
@@ -72,8 +88,6 @@ public class CitySuggestionAdapter extends ArrayAdapter {
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
             FilterResults results = new FilterResults();
-            Thread thread = Thread.currentThread();
-            Log.d("Adapter thread1", thread.getName());
             if(prefix == null || prefix.length() == 0){
                 synchronized (lock){
                     results.values = new ArrayList<String>();
