@@ -56,7 +56,8 @@ public class CitySuggestionAdapter extends ArrayAdapter {
         }
 
         TextView cityName = view.findViewById(android.R.id.text1);
-        cityName.setText(getItem(position).getName());
+        String suggestion = getItem(position).getName() + ", " + getItem(position).getCountry();
+        cityName.setText(suggestion);
 
 //
 //        view.setOnTouchListener(new View.OnTouchListener() {
