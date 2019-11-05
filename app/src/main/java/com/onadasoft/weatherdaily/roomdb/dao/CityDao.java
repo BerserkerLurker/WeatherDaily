@@ -31,5 +31,5 @@ public interface CityDao {
     void deleteCity(City city);
 
     @Query("DELETE FROM city")
-    public void nukeCities();
+    void nukeCities();
 }
