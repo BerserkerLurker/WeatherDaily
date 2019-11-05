@@ -14,7 +14,7 @@ public class CustomCurrent implements Parcelable {
     private double mainTemp;
     private double mainTempMin;
     private double mainTempMax;
-    private long mainHumidity;
+    private double mainHumidity;
     private double windSpeed;
     private double windDeg;
     private long dt;
@@ -22,7 +22,7 @@ public class CustomCurrent implements Parcelable {
 
     public CustomCurrent(Current current) {
         this.name = current.getName();
-        this.sysCountry = current.getSys().getCountry();
+        this.sysCountry = current.getSys().getCountry() != null ? current.getSys().getCountry() : "";
         this.weatherId = current.getWeather().get(0).getId();
         this.weatherMain = current.getWeather().get(0).getMain();
         this.weatherDescription = current.getWeather().get(0).getDescription();
@@ -146,7 +146,7 @@ public class CustomCurrent implements Parcelable {
         this.mainTempMax = mainTempMax;
     }
 
-    public long getMainHumidity() {
+    public double getMainHumidity() {
         return mainHumidity;
     }
 
@@ -215,7 +215,7 @@ public class CustomCurrent implements Parcelable {
         parcel.writeDouble(mainTemp);
         parcel.writeDouble(mainTempMin);
         parcel.writeDouble(mainTempMax);
-        parcel.writeLong(mainHumidity);
+        parcel.writeDouble(mainHumidity);
         parcel.writeDouble(windSpeed);
         parcel.writeDouble(windDeg);
         parcel.writeLong(dt);
