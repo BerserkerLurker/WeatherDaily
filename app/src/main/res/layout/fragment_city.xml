@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CityFragment">
+    tools:context=".CityFragment"
+    tools:background="@color/cloudyDark">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="?themePrimary"
         android:orientation="vertical"
-        android:paddingTop="68dp">
+        android:paddingTop="48dp">
 
 
         <android.support.constraint.Barrier
@@ -41,10 +42,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="..., ..."
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Tunis, TN"/>
 
 
         <TextView
@@ -53,12 +54,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="..."
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="96sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvCityCountry" />
+            app:layout_constraintTop_toBottomOf="@+id/tvCityCountry"
+            tools:text="&#9788;"/>
 
 
         <TextView
@@ -69,34 +70,34 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="..."
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/tvWeatherIcon"
-            app:layout_constraintVertical_bias="0.12" />
+            app:layout_constraintVertical_bias="0.12"
+            tools:text="31°"/>
 
         <TextView
             android:id="@+id/tvTempMax"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="..."
             android:textSize="24sp"
             app:layout_constraintEnd_toStartOf="@id/barrier2"
             app:layout_constraintStart_toEndOf="@+id/tvTemp"
-            app:layout_constraintTop_toTopOf="@+id/tvTemp" />
+            app:layout_constraintTop_toTopOf="@+id/tvTemp"
+            tools:text="37°"/>
 
         <TextView
             android:id="@+id/tvTempMin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="..."
             android:textSize="24sp"
             app:layout_constraintStart_toEndOf="@+id/tvTemp"
             app:layout_constraintTop_toBottomOf="@+id/tvTempMax"
-            app:layout_constraintEnd_toStartOf="@id/barrier2"/>
+            app:layout_constraintEnd_toStartOf="@id/barrier2"
+            tools:text="26°"/>
 
         <TextView
             android:id="@+id/tvWeatherDesc"
@@ -105,32 +106,32 @@
             android:layout_margin="10dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="..."
             android:textSize="36sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/tvTemp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toEndOf="@+id/barrier2" />
+            app:layout_constraintStart_toEndOf="@+id/barrier2"
+            tools:text="over-cast clouds"/>
 
         <TextView
             android:id="@+id/tvWind"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
-            android:text="..."
-            android:textSize="32sp"
+            android:textSize="24sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/tvHumidity"
-            app:layout_constraintStart_toStartOf="@+id/guideline" />
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            tools:text="10 km/h"/>
 
         <TextView
             android:id="@+id/tvHumidity"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="72dp"
             android:layout_marginEnd="64dp"
-            android:text="..."
-            android:textSize="32sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/tvWeatherDesc" />
+            app:layout_constraintTop_toBottomOf="@+id/tvWeatherDesc"
+            tools:text="56%"/>
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
