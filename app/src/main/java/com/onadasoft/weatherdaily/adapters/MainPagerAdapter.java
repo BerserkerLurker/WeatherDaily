@@ -1,5 +1,6 @@
 package com.onadasoft.weatherdaily.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -49,17 +50,19 @@ public class MainPagerAdapter extends SmartFragmentStatePagerAdapter {
 //            default:
 //                return null;
 //        }
-        CustomCurrent customCurrent = new CustomCurrent((Current)HelperFunctions.getElementByIndex(currentWeatherMap, position));
+
+        Current holder = (Current)HelperFunctions.getElementByIndex(currentWeatherMap, position);
+        CustomCurrent customCurrent = new CustomCurrent(holder);
 
         return CityFragment.newInstance(position, "Page #" + position, customCurrent);
     }
 
     @Override
     public int getCount() {
-        //if (currentWeatherMap!=null) {
+        if (currentWeatherMap!=null) {
             return currentWeatherMap.size();
-        //}
-        //return 0;
+        }
+        return 0;
 //        return NUM_ITEMS;
     }
 
@@ -70,4 +73,9 @@ public class MainPagerAdapter extends SmartFragmentStatePagerAdapter {
 //        return "x";
 //    }
 
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
 }
