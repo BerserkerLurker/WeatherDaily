@@ -1,5 +1,6 @@
 package com.onadasoft.weatherdaily.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Current {
@@ -15,6 +16,35 @@ public class Current {
     private long id;
     private String name;
     private long cod;
+
+    public Current(){}
+
+    public Current(long id, String name, Coord coord, String country){
+        this.coord = coord;
+
+        weather = new ArrayList<Weather>();
+        Weather w =  new Weather();
+        w.setIcon("");
+        w.setDescription("");
+        w.setMain("");
+        weather.add(w);
+
+        base = "";
+
+        main = new Main();
+
+        wind = new Wind();
+
+        clouds = new Clouds();
+
+        sys = new Sys();
+        sys.setCountry(country);
+
+        this.id = id;
+
+        this.name = name;
+
+    }
 
     public Coord getCoord() {
         return coord;
