@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-public class App extends Application implements RunnableCompleteListener {
+public class App extends Application implements RunnableCompleteListener{//, CityRepository.AsyncResponseListener {
 
+    private static final String SHARED_PREF_KEY = "weatherDaily";
     // public int DB_EMPTY = 1;
 
     private final CountDownLatch startLatch = new CountDownLatch(1);
@@ -25,6 +26,8 @@ public class App extends Application implements RunnableCompleteListener {
     private static Resources resources;
 
     private AppDatabase appDB;
+
+    private GlobalData globalData;
 
     //--- get Application singleton
     static App myAppInstance;
@@ -45,23 +48,30 @@ public class App extends Application implements RunnableCompleteListener {
 
         resources = getResources();
 
+        // Global Data init
+        myAppInstance.initializeGlobalData();
+
         //appDB = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "cities-db").build();
         appDB = AppDatabase.getDatabase(this);
 
-        Thread thread = Thread.currentThread();
-        Log.d("threadmain", thread.getName());
+        // Thread thread = Thread.currentThread();
+        // Log.d("threadmain", thread.getName());
         NotifyingRunnable readCitiesJSON = new NotifyingRunnable() {
             List<City> citiesList = new ArrayList<>();
 
             @Override
             public void doRun() {
+                Log.d("dbrun1", "doRun: works ");
+
                 int dbCitySize = appDB.cityDao().getCitySize();
+                Log.d("dbrun2", "doRun: works "+dbCitySize);
+
                 // if db is empty
-                if (dbCitySize == 0){
-                    Thread thread = Thread.currentThread();
-                    Log.d("thread", thread.getName());
+                if (dbCitySize != 209579){
+                    // Thread thread = Thread.currentThread();
+                    // Log.d("thread", thread.getName());
                     citiesList = HelperFunctions.getCitiesFromJSON(getApplicationContext());
-                    Log.d("blob", citiesList.toString());
+                    // Log.d("blob", citiesList.toString());
                     appDB.cityDao().insertAll(citiesList.toArray(new City[citiesList.size()]));
                 }
             }
@@ -69,8 +79,27 @@ public class App extends Application implements RunnableCompleteListener {
         readCitiesJSON.addListener(this);
         Thread separate = new Thread(readCitiesJSON);
         separate.start();
+//
+//        CityRepository repository = new CityRepository();
+//        repository.getCities("berlin", this);
+//
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            repository.getCities("paris", getApplicationContext());
+//        }).start();
 
+    }
 
+    private void initializeGlobalData(){
+        globalData = new GlobalData(myAppInstance, SHARED_PREF_KEY);
+    }
+
+    public GlobalData getGlobalData(){
+        return globalData;
     }
 
     public static Resources getAppResources(){
@@ -91,4 +120,9 @@ public class App extends Application implements RunnableCompleteListener {
         startLatch.countDown();
 
     }
+
+//    @Override
+//    public void responseCallback(List<City> results) {
+//        // Log.d("Async", "responseCallback: "+results.size());
+//    }
 }
