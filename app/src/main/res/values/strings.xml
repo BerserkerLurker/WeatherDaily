@@ -15,6 +15,20 @@
     <string name="wi_snow">&#xf01b;</string>
     <string name="wi_rain">&#xf019;</string>
 
+    <string name="wi_thermometer">&#xf055;</string>
+    <string name="wi_celsius">&#xf03c;</string>
+    <string name="wi_fahrenheit">&#xf045;</string>
+
+    <string name="wi_humidity">&#xf07a;</string>
+    <string name="wi_barometer">&#xf079;</string>
+    <string name="wi_strong_wind">&#xf050;</string>
+
+    <string name="wi_na">&#xf07b;</string>
+
+    <string name="wi_sunrise">&#xf051;</string>
+    <string name="wi_sunset">&#xf052;</string>
+
+
 
     <!--API info-->
     <string name="base_url">http://api.openweathermap.org/data/2.5</string>
