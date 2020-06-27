@@ -10,15 +10,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.onadasoft.weatherdaily.R;
+import com.onadasoft.weatherdaily.models.Current;
 import com.onadasoft.weatherdaily.models.recyclerCities.City;
+import com.onadasoft.weatherdaily.utils.HelperFunctions;
 
+import java.util.Currency;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class AddCityAdapter extends RecyclerView.Adapter<AddCityAdapter.ViewHolder> {
-    private List<City> mCities;
+    private LinkedHashMap<String, Current> mCurrentWeatherMap;
 
-    public AddCityAdapter(List<City> cities) {
-        mCities = cities;
+    public AddCityAdapter(LinkedHashMap<String, Current> currentWeatherMap) {
+        mCurrentWeatherMap = currentWeatherMap;
     }
 
     @NonNull
@@ -36,7 +40,9 @@ public class AddCityAdapter extends RecyclerView.Adapter<AddCityAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
-        City city = mCities.get(position);
+        Current current = (Current)HelperFunctions.getElementByIndex(mCurrentWeatherMap, position);
+
+        City city = new City(current.getId(), current.getName(), current.getSys().getCountry(), current.getCoord());
 
         TextView cityName = viewHolder.cityName;
         cityName.setText(city.getName());
@@ -48,7 +54,7 @@ public class AddCityAdapter extends RecyclerView.Adapter<AddCityAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mCities.size();
+        return mCurrentWeatherMap.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
