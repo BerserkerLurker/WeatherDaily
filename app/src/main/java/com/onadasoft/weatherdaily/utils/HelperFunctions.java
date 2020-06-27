@@ -57,7 +57,7 @@ public class HelperFunctions {
         return icon;
     }
 
-    private static String getStringRes(int addr){
+    public static String getStringRes(int addr){
         return App.getAppResources().getString(addr);
     }
 
@@ -65,15 +65,19 @@ public class HelperFunctions {
     public static boolean isNetworkAvailable(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo == null) return false;
-        NetworkInfo.State network = networkInfo.getState();
-        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
+        return networkInfo != null && networkInfo.isConnected();
+//        if(networkInfo == null) return false;
+//        NetworkInfo.State network = networkInfo.getState();
+//        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
     }
 
     public static Object getElementByIndex(LinkedHashMap map, int index){
         return map.get((map.keySet().toArray())[index]);
     }
 
+    public static Object getKeyByIndex(LinkedHashMap map, int index){
+        return map.keySet().toArray()[index];
+    }
 
     public static List<City> getCitiesFromJSON(Context context){
         String json = "";
