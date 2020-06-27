@@ -24,8 +24,21 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:barrierDirection="end"
-            app:constraint_referenced_ids="tvTempMax,tvTempMin"
+            app:constraint_referenced_ids="tvTempMax,tvTempMin,tvTemp"
+            tools:layout_editor_absoluteX="102dp"
             tools:layout_editor_absoluteY="16dp" />
+
+        <TextView
+            android:id="@+id/tvLastUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Last update time, date" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -44,8 +57,8 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Tunis, TN"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvLastUpdate"
+            tools:text="Tunis, TN" />
 
 
         <TextView
@@ -59,7 +72,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/tvCityCountry"
-            tools:text="&#9788;"/>
+            tools:text="&#9788;" />
 
 
         <TextView
@@ -75,29 +88,27 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/tvWeatherIcon"
             app:layout_constraintVertical_bias="0.12"
-            tools:text="31°"/>
+            tools:text="31°" />
 
         <TextView
             android:id="@+id/tvTempMax"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="44dp"
             android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@id/barrier2"
-            app:layout_constraintStart_toEndOf="@+id/tvTemp"
+            app:layout_constraintStart_toStartOf="@+id/tvTemp"
             app:layout_constraintTop_toTopOf="@+id/tvTemp"
-            tools:text="37°"/>
+            tools:text="37°" />
 
         <TextView
             android:id="@+id/tvTempMin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/tvTemp"
-            app:layout_constraintTop_toBottomOf="@+id/tvTempMax"
-            app:layout_constraintEnd_toStartOf="@id/barrier2"
-            tools:text="26°"/>
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvTempMax"
+            app:layout_constraintStart_toEndOf="@+id/tvTempMax"
+            tools:text="26°" />
 
         <TextView
             android:id="@+id/tvWeatherDesc"
@@ -110,7 +121,7 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/tvTemp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toEndOf="@+id/barrier2"
-            tools:text="over-cast clouds"/>
+            tools:text="over-cast clouds" />
 
         <TextView
             android:id="@+id/tvWind"
@@ -120,7 +131,7 @@
             android:textSize="24sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/tvHumidity"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            tools:text="10 km/h"/>
+            tools:text="10 km/h" />
 
         <TextView
             android:id="@+id/tvHumidity"
@@ -131,7 +142,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/tvWeatherDesc"
-            tools:text="56%"/>
+            tools:text="56%" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
