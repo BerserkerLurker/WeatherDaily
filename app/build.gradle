@@ -45,4 +45,7 @@ dependencies {
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.1'
 
+    // EventBus
+    implementation 'org.greenrobot:eventbus:3.2.0'
+
 }

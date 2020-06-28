@@ -31,11 +31,16 @@ import com.onadasoft.weatherdaily.adapters.CitySuggestionAdapter;
 import com.onadasoft.weatherdaily.models.Current;
 import com.onadasoft.weatherdaily.models.recyclerCities.City;
 import com.onadasoft.weatherdaily.roomdb.db.AppDatabase;
+import com.onadasoft.weatherdaily.utils.HelperFunctions;
 import com.onadasoft.weatherdaily.utils.SwipeController;
 import com.onadasoft.weatherdaily.utils.SwipeControllerActions;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import static com.onadasoft.weatherdaily.App.getInstance;
 
 
 /**
@@ -43,7 +48,9 @@ import java.util.List;
  */
 public class AddCityFragment extends Fragment implements View.OnClickListener {
 
-    private AppDatabase appDB;
+    private GlobalData globalData = getInstance().getGlobalData();
+
+//    private AppDatabase appDB;
 
     ImageView backBtn;
     RecyclerView rvCities;
@@ -54,7 +61,8 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
     public MainActivity mainActivity;
 
-    private List<City> mCities = new ArrayList<>();
+//    private List<City> mCities = new ArrayList<>();
+    private LinkedHashMap<String, Current> mCurrentWeatherMap;
 
     public AddCityFragment() {
         // Required empty public constructor
@@ -66,17 +74,17 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         // ToDo -- iterate hashmap and fill cities list
+        mCurrentWeatherMap = globalData.getCurrentWeatherMap();
 
-        for(Current current:mainActivity.currentWeatherMap.values()){
-            City city = new City(current.getId(), current.getName(), current.getSys().getCountry(), current.getCoord());
-            mCities.add(city);
-        }
+//        for(Current current:mCurrentWeatherMap.values()){
+//            City city = new City(current.getId(), current.getName(), current.getSys().getCountry(), current.getCoord());
+//            mCities.add(city);
+//        }
 
-        Log.d("FromAddFrag", "ListCities: "+ mCities.toString());
+//        Log.d("FromAddFrag", "ListCities: "+ mCities.toString());
 
 
-        //appDB = ((App)getActivity().getApplication()).getDatabase();
-        appDB = AppDatabase.getDatabase(getContext());
+//        appDB = AppDatabase.getDatabase(getContext());
 
 
     }
@@ -88,6 +96,8 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 //        Log.d("FromAddFrag: ", mainActivity.currentWeatherMap.toString());
 
         // Inflate the layout for this fragment
+        getContext().getTheme().applyStyle(R.style.AppTheme_NoActionBar_Night, true);
+
         View view = inflater.inflate(R.layout.fragment_add_city, container, false);
         backBtn = view.findViewById(R.id.btn_back_add_city);
         backBtn.setOnClickListener(this);
@@ -99,10 +109,13 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
 
         Thread fabController = new Thread(() -> {
             try {
-                ((App)getActivity().getApplication()).getStartLatch().await();
+                //((App)getActivity().getApplication()).getStartLatch().await();
+                App.getInstance().getStartLatch().await();
                 getActivity().runOnUiThread(() -> {
-                    fabAddCity.setEnabled(true);
-                    fabAddCity.getBackground().setColorFilter(null);
+//                    fabAddCity.setEnabled(true);
+//                    fabAddCity.getBackground().setColorFilter(null);
+                    toggleAddBtn(mCurrentWeatherMap.size());
+
                 });
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -112,7 +125,7 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
         fabController.start();
 
         rvCities = view.findViewById(R.id.rvCities);
-        addCityAdapter = new AddCityAdapter(mCities);
+        addCityAdapter = new AddCityAdapter(mCurrentWeatherMap);//todo
         rvCities.setLayoutManager(new LinearLayoutManager(mainActivity));
 
         rvCities.setAdapter(addCityAdapter);
@@ -120,9 +133,22 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
         SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
             public void onRightClicked(int position) {
-                mCities.remove(position);
+//                Log.d("to be rem", " "+mCities.get(position).getName());
+//                String toBeDel = mCities.get(position).getName();
+                String toBeDel = (String)HelperFunctions.getKeyByIndex(mCurrentWeatherMap, position);
+//                mCities.remove(position);
+                if(toBeDel.equals(globalData.getLastKnowLocation())){
+                    globalData.saveLastLocation("*");
+                }
+                mCurrentWeatherMap.remove(toBeDel);
+                mainActivity.fragmentPagerAdapter.notifyDataSetChanged();
+
                 addCityAdapter.notifyItemRemoved(position);
                 addCityAdapter.notifyItemRangeChanged(position, addCityAdapter.getItemCount());
+
+                // Limit 10
+                toggleAddBtn(mCurrentWeatherMap.size());
+                updateSharedPrefs();
             }
         });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
@@ -135,6 +161,7 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        toggleAddBtn(mCurrentWeatherMap.size());
 
 
         return view;
@@ -145,6 +172,7 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_back_add_city){
+            //new Thread(() -> appDB.cityDao().nukeCities()).start();
             getActivity().onBackPressed();
         }
         if(view.getId() == R.id.fabAddCity){
@@ -160,8 +188,10 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
             alert.setTitle("Add new city");
             alert.setMessage("Type the city name");
             // Set an EditText view to get user input
+            // final EditText input = new EditText(getContext());
 
             final AutoCompleteTextView input = new AutoCompleteTextView(getContext());
+            input.setId(R.id.addCityInputText);
 
             // Color of InputText content
             TypedValue typedValue = new TypedValue();
@@ -182,7 +212,22 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
             input.setLayoutParams(params);
             container.addView(input);
 
+//            Window window = alert.getWindow();
+//            WindowManager.LayoutParams wlp = window.getAttributes();
+//            wlp.gravity = Gravity.TOP;
+//            wlp.y = 24;
+//            window.setAttributes(wlp);
 
+
+/*
+                //TEST
+            // Get the string array
+            String[] countries = getResources().getStringArray(R.array.countries_array);
+// Create the adapter and set it to the AutoCompleteTextView
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, countries);
+            input.setAdapter(adapter);
+                //TEST
+ */
             List<City> cities = new ArrayList<City>();
             CitySuggestionAdapter adapter = new CitySuggestionAdapter(this.getContext(), android.R.layout.simple_list_item_1, cities);
             input.setAdapter(adapter);
@@ -203,6 +248,14 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
                 }
             });*/
 
+//
+//            input.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+//                @Override
+//                public void onDismiss() {
+//                    InputMethodManager in = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    in.hideSoftInputFromWindow(input.getApplicationWindowToken(), 0);
+//                }
+//            });
 
             alert.show();
         // ------------NewCityInput-------------
@@ -218,9 +271,37 @@ public class AddCityFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(AddCityFragment.this.getContext(),"Clicked item from Auto completion list "
                     + parent.getItemAtPosition(position)
                     , Toast.LENGTH_SHORT).show();
-                    mCities.add((City)parent.getItemAtPosition(position));
+//                    mCities.add((City)parent.getItemAtPosition(position));
+                    City city = (City)parent.getItemAtPosition(position);
+                    Current current = new Current(city.getId(), city.getName(), city.getCoord(), city.getCountry());
+                    mCurrentWeatherMap.put(current.getName(), current);
                     alert.dismiss();
+                    // Limit 10
+                    toggleAddBtn(mCurrentWeatherMap.size());
+                    //Test fix list bug 03/08/2019
+//                    mainActivity.checkCitiesMatch(mCities, mCurrentWeatherMap);
+                    mainActivity.fragmentPagerAdapter.notifyDataSetChanged();
+
+                    // Timestamp reset if city added
+                    globalData.setLastUpdateTimestamp(new Date(1));
+                    updateSharedPrefs();
                 }
             };
+
+    private void updateSharedPrefs() {
+        globalData.saveWeather();
+//        String citiesJSON = mainActivity.gson.toJson(mCities);
+//        mainActivity.prefMgr.setString(mainActivity.sharedPref, "cities", citiesJSON);
+    }
+
+    private void toggleAddBtn(int size){
+        if(size == 8){
+            fabAddCity.setEnabled(false);
+            fabAddCity.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        }else if(size < 8){
+            fabAddCity.setEnabled(true);
+            fabAddCity.getBackground().setColorFilter(null);
+        }
+    }
 
 }
