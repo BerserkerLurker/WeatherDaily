@@ -26,7 +26,7 @@ public class APIRequests {
         urlBuilder.addQueryParameter("mode",mode);
 
 
-        if (id != 0) {
+        if ((id != 0) && (id != -1)) {
             urlBuilder.addQueryParameter("id", Long.toString(id));
         }else {
 
